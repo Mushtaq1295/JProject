@@ -1,9 +1,5 @@
 import { useState } from "react";
 import React from "react";
-import { CalendarIcon, FilterIcon, PlusIcon } from "../components/IconWrapper";
-import { SelectDateButton } from "./SelectDateBtn";
-import { AddMetricsButton } from "./AddMetricsBtn";
-import { FilterButton } from "./FilterButton";
 
 export const TimeFilter = () => {
   const timeFilters = ["1d", "7d", "1m", "3m", "6m", "1y", "3y"];
