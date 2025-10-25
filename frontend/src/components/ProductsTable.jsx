@@ -2,50 +2,6 @@
 import React from "react";
 import { EditIcon, TrashIcon } from "./IconWrapper"; // Add these icons
 
-// Mock Data based on your image
-const products = [
-  {
-    id: "1",
-    img: "https://via.placeholder.com/40x40.png?text=DV",
-    name: "Droned Vape",
-    productId: "TUX001234",
-    supplierId: "REMA0123",
-    suppliers: 5,
-    category: "Traditional Vapes",
-    price: "$4500",
-    weight: "3 lb",
-    stock: "12000",
-    recLevel: "15000",
-  },
-  {
-    id: "2",
-    img: "https://via.placeholder.com/40x40.png?text=CE",
-    name: "Crosscut E-Cig",
-    productId: "TUX001234",
-    supplierId: "REMA0123",
-    suppliers: 0,
-    category: "E-Cigarettes",
-    price: "$4500",
-    weight: "3 lb",
-    stock: "12000",
-    recLevel: "15000",
-  },
-  {
-    id: "3",
-    img: "https://via.placeholder.com/40x40.png?text=CU",
-    name: "Cultyvate",
-    productId: "TUX001234",
-    supplierId: "REMA0123",
-    suppliers: 5,
-    category: "Edibles",
-    price: "$4500",
-    weight: "3 lb",
-    stock: "12000",
-    recLevel: "15000",
-  },
-  // ... add the rest of your data
-];
-
 const ProductRow = ({ product, onEdit,onDelete }) => (
   <tr className="border-b border-gray-200 hover:bg-gray-50">
     <td className="px-5 py-3">
@@ -54,14 +10,14 @@ const ProductRow = ({ product, onEdit,onDelete }) => (
     <td className="px-5 py-3">
       <div className="flex items-center gap-3">
         <img
-          src={product.img}
-          alt={product.name}
+          src={product.img || "https://via.placeholder.com/40"}
+          alt={product.pname || product.name}
           className="w-10 h-10 rounded-full object-cover"
         />
-        <span className="font-medium text-gray-900">{product.name}</span>
+        <span className="font-medium text-gray-900">{product.pname || product.name}</span>
       </div>
     </td>
-    <td className="px-5 py-3 text-sm text-gray-600">{product.productId}</td>
+    <td className="px-5 py-3 text-sm text-gray-600">{product.pid}</td>
     <td className="px-5 py-3 text-sm text-gray-600">
       <a href="#" className="text-purple-700 hover:underline">
         {product.supplierId}
@@ -79,32 +35,22 @@ const ProductRow = ({ product, onEdit,onDelete }) => (
     </td>
     <td className="px-5 py-3 text-sm text-gray-600">{product.price}</td>
     <td className="px-5 py-3 text-sm text-gray-600">{product.weight}</td>
-    <td className="px-5 py-3 text-sm text-gray-600">{product.stock}</td>
-    <td className="px-5 py-3 text-sm text-gray-600">{product.recLevel}</td>
+    <td className="px-5 py-3 text-sm text-gray-600">{product.stockLevel || product.stock}</td>
+    <td className="px-5 py-3 text-sm text-gray-600">{product.recLevel || product.recLevel}</td>
     <td className="px-5 py-3">
       <div className="flex items-center gap-3">
         {/*
           CHANGED: Added onClick handler to the button.
           It calls the 'onEdit' function and passes this specific 'product' up.
         */}
-        <button
-          onClick={() => onEdit(product)}
-          className="text-gray-400 hover:text-purple-600 cursor-pointer"
-        >
-          <EditIcon />
-        </button>
-        <button
-          onClick={() => onDelete(product)}
-          className="text-gray-400 hover:text-red-600 cursor-pointer"
-        >
-          <TrashIcon />
-        </button>
+        <button onClick={() => onEdit(product)} className="text-gray-400 hover:text-purple-600 cursor-pointer"><EditIcon /></button>
+        <button onClick={() => onDelete(product)} className="text-gray-400 hover:text-red-600 cursor-pointer"><TrashIcon /></button>
       </div>
     </td>
   </tr>
 );
 
-export const ProductsTable = ({ onEdit, onDelete }) => {
+export const ProductsTable = ({products=[], onEdit, onDelete }) => {
   const headers = [
     "Product Name",
     "Product ID",
@@ -139,15 +85,13 @@ export const ProductsTable = ({ onEdit, onDelete }) => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {products.map((product) => (
-            // CHANGED: Pass the 'onEdit' prop down to the ProductRow
-            <ProductRow
-              key={product.id}
-              product={product}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
-          ))}
+          {products.length === 0 ? (
+            <tr><td colSpan={10} className="px-5 py-6 text-center text-gray-500">No products found</td></tr>
+          ) : (
+            products.map((product) => (
+              <ProductRow key={product._id || product.id || product.pid} product={product} onEdit={onEdit} onDelete={onDelete} />
+            ))
+          )}
         </tbody>
       </table>
     </div>

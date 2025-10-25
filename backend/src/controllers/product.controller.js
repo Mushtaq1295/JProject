@@ -2,24 +2,35 @@ import Product from "../models/products.model.js";
 
 
 //create product
-export const CreateProduct = async(req,res) => {
-    const {pid} = req.body;
-    try {
-        if(!pid){
-            return res.status(400).json({message:"Product ID is required"});
-        }
-        const existingProduct = await Product.findOne({pid});
-        if(existingProduct){
-            return res.status(400).json({message:"Product with this ID already exists"});
-        }
-        const newProduct = new Product(req.body);
-        await newProduct.save();
-        return res.status(201).json({message:"Product created successfully",data:product});
-    } catch (error) {
-        console.log("Error in CreateProduct controller",error.message)
-        return res.status(500).json({message:"Internal server error",error:error.message});
+export const CreateProduct = async (req, res) => {
+  const { pid } = req.body;
+
+  try {
+    if (!pid) {
+      return res.status(400).json({ message: "Product ID is required" });
     }
-}
+
+    const existingProduct = await Product.findOne({ pid });
+    if (existingProduct) {
+      return res.status(400).json({ message: "Product with this ID already exists" });
+    }
+
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+
+    return res.status(201).json({
+      message: "Product created successfully",
+      data: newProduct,   // ✅ Fixed Here
+    });
+  } catch (error) {
+    console.log("Error in CreateProduct controller", error.message);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
 
 //get all products
 export const getAllProducts = async(req,res) => {

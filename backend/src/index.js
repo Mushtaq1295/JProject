@@ -7,8 +7,9 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+
 app.use(express.json());
+app.use(cors());
 
 dotenv.config();
 connectDB();
@@ -17,7 +18,7 @@ import authRoutes from "./routes/auth.route.js";
 app.use('/user',authRoutes)
 
 import productRoutes from "./routes/product.route.js";
-app.use('/product',productRoutes);
+app.use('/products',productRoutes);
 
 //product
 

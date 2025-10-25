@@ -1,5 +1,5 @@
 // src/pages/ProductsPage.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProductsToolbar } from "../components/ProductsToolbar.jsx";
 import { ProductsTable } from "../components/ProductsTable";
 import { Pagination } from "../components/Pagination";
@@ -9,7 +9,14 @@ import { SelectDateButton } from "../components/SelectDateBtn.jsx";
 import { ProductModal } from "../components/ProductModal.jsx"; // CHANGED: Import the modal
 import { ConfirmDeleteModal } from "../components/ConfirmDeleteModal.jsx";
 
+import { fetchProducts, deleteProduct } from "../services/products.js";
+
 export const ProductsPage = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+
   // --- State for the modal ---
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null);
@@ -17,6 +24,25 @@ export const ProductsPage = () => {
   // --- STATE FOR DELETE MODAL ---
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      const res = await fetchProducts();
+      // backend returns { message, data } so we read res.data.data
+      const data = res?.data?.data ?? res?.data;
+      setProducts(data);
+    } catch (err) {
+      setError(err?.response?.data?.message || err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
 
   // --- Handlers for opening/closing the modal ---
   const handleOpenAddModal = () => {
@@ -45,12 +71,22 @@ export const ProductsPage = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleConfirmDelete = () => {
-    // --- THIS IS WHERE YOU WOULD CALL YOUR API TO DELETE ---
-    console.log("Deleting item:", itemToDelete.name);
-    // After successful deletion, close the modal
-    handleCloseDeleteModal();
-    // You would also refresh your products list here
+  const handleConfirmDelete = async () => {
+    if (!itemToDelete) return;
+    try {
+      await deleteProduct(itemToDelete._id);
+      // optimistically remove from UI
+      setProducts((prev) => prev.filter((p) => p._id !== itemToDelete._id));
+      handleCloseDeleteModal();
+    } catch (err) {
+      alert("Delete failed: " + (err?.response?.data?.message || err.message));
+    }
+  };
+
+  // Called after create/update to refresh list
+  const onSaved = async () => {
+    await loadProducts();
+    handleCloseModal();
   };
 
   return (
@@ -69,21 +105,21 @@ export const ProductsPage = () => {
           </div>
         </div>
         {/* 2. Toolbar (Search, Filters, Actions) */}
-        <ProductsToolbar onAddProduct={handleOpenAddModal} />
+        <ProductsToolbar 
+        onAddProduct={handleOpenAddModal}
+         />
 
         {/* 3. Products Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          {/*
-            --- THIS IS THE FIX ---
-            You must pass BOTH onEdit and onDelete to the ProductsTable component
-          */}
-          <ProductsTable
-            onEdit={handleOpenEditModal}
-            onDelete={handleOpenDeleteModal}
-          />
+       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          {loading ? (
+            <div className="p-6">Loading products…</div>
+          ) : error ? (
+            <div className="p-6 text-red-600">Error: {error}</div>
+          ) : (
+            <ProductsTable products={products} onEdit={handleOpenEditModal} onDelete={handleOpenDeleteModal} />
+          )}
         </div>
 
-        {/* 4. Pagination */}
         <Pagination />
       </main>
 
@@ -92,6 +128,7 @@ export const ProductsPage = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         productToEdit={productToEdit}
+        onSaved={onSaved}
       />
 
       {/* Render the Delete Modal */}
@@ -99,7 +136,7 @@ export const ProductsPage = () => {
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
         onConfirm={handleConfirmDelete}
-        itemName={itemToDelete?.name}
+        itemName={itemToDelete?.pname || itemToDelete?.name}
         itemType="product"
       />
     </div>
