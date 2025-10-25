@@ -1,9 +1,7 @@
 import React from "react";
-// import { Link } from "react-router-dom";
-import Logo from "../components/Logo";
 // Put your image file at src/assets/hero.png (or adjust this import path)
 // import HeroImage from "../assets/hero.png";
-import Landing from "../../public/Landing-pic1.png";
+import Landing from "../assets/Landing-pic1.png";
 
 export const LandingPage = () => {
   return (

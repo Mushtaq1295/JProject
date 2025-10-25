@@ -59,7 +59,7 @@ export const Sidebar = () => {
           this class is 'important' and should override the 'text-4xl'
           that is inside the Logo.jsx component.
         */}
-        <Logo className="!text-2xl" />
+        <Logo className="text-2xl! cursor-pointer" />
       </div>
 
       {/* Navigation */}
