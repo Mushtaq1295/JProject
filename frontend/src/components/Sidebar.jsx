@@ -1,5 +1,5 @@
 // Sidebar.jsx
-import React, { useState } from "react";
+import React from "react"; // REMOVED: useState
 import Logo from "./Logo";
 import {
   BoxIcon,
@@ -13,64 +13,65 @@ import {
   UsersIcon,
   WarehouseIcon,
 } from "./IconWrapper";
+import { NavLink } from "react-router-dom"; // IMPORT: NavLink
 
 // --- Reusable NavItem ---
-const NavItem = ({ icon, text, active, onClick }) => (
-  <a
-    href="#"
-    onClick={onClick}
-    className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg ${
-      active
-        ? "bg-purple-50 text-[#6941C6]"
-        : "text-gray-600 hover:bg-gray-100"
-    }`}
+// CHANGED: Converted to NavLink, uses 'to' prop for path
+// REMOVED: 'active' and 'onClick' props (NavLink handles this)
+const NavItem = ({ icon, text, to, end = false }) => (
+  <NavLink
+    to={to}
+    end={end} // 'end' prop ensures '/' only matches the root path
+    // 'className' now takes a function to check if the link is active
+    className={({ isActive }) =>
+      `flex items-center space-x-3 px-3 py-2.5 rounded-lg ${
+        isActive // Use 'isActive' from NavLink
+          ? "bg-purple-50 text-[#6941C6]"
+          : "text-gray-600 hover:bg-gray-100"
+      }`
+    }
   >
     {React.cloneElement(icon, {
       className: "w-5 h-5",
     })}
     <span className="font-medium text-sm">{text}</span>
-  </a>
+  </NavLink>
 );
 
 export const Sidebar = () => {
-  const [activeItem, setActiveItem] = useState("Overview");
+  // REMOVED: const [activeItem, setActiveItem] = useState("Overview");
 
+  // CHANGED: Added 'path' for each navigation item
   const navItems = [
-    { icon: <HomeIcon />, text: "Overview" },
-    { icon: <BoxIcon />, text: "Products" },
-    { icon: <TruckIcon />, text: "Supplier" },
-    { icon: <TagIcon />, text: "Category" },
-    { icon: <WarehouseIcon />, text: "Warehouse" },
-    { icon: <CreditCardIcon />, text: "Payment" },
-    { icon: <UsersIcon />, text: "Roles" },
-    { icon: <SupportIcon />, text: "Support" },
-    { icon: <SettingsIcon />, text: "Settings" },
+    { icon: <HomeIcon />, text: "Overview", path: "/dashboard" }, // Root path
+    { icon: <BoxIcon />, text: "Products", path: "/products" },
+    { icon: <TruckIcon />, text: "Supplier", path: "/supplier" },
+    { icon: <TagIcon />, text: "Category", path: "/category" },
+    { icon: <WarehouseIcon />, text: "Warehouse", path: "/warehouse" },
+    { icon: <CreditCardIcon />, text: "Payment", path: "/payment" },
+    { icon: <UsersIcon />, text: "Roles", path: "/roles" },
+    { icon: <SupportIcon />, text: "Support", path: "/support" },
+    { icon: <SettingsIcon />, text: "Settings", path: "/settings" },
   ];
 
   return (
     <aside className="w-64 bg-white flex flex-col shadow-sm fixed top-0 left-0 h-full z-10">
       {/* Logo */}
-      {/* FIX 1 (ALIGNMENT): Added 'items-center' to this div
-        to vertically center the logo in the h-20 container.
-      */}
       <div className="p-4 border-b border-gray-200 h-20 flex items-center">
-        {/* FIX 2 (SIZE): Added '!' before 'text-2xl'.
-          This makes it '!text-2xl', which tells Tailwind
-          this class is 'important' and should override the 'text-4xl'
-          that is inside the Logo.jsx component.
-        */}
-        <Logo className="text-2xl! cursor-pointer" />
+        {/* CORRECTED: The important modifier '!' goes before the utility */}
+        <Logo className="!text-2xl cursor-pointer" />
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+        {/* CHANGED: Mapping to NavItem with 'to' and 'end' props */}
         {navItems.map((item) => (
           <NavItem
             key={item.text}
             icon={item.icon}
             text={item.text}
-            active={activeItem === item.text}
-            onClick={() => setActiveItem(item.text)}
+            to={item.path}
+            end={item.path === "/"} // Add 'end' prop only for the "Overview" link
           />
         ))}
       </nav>
@@ -80,7 +81,7 @@ export const Sidebar = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <img
-              src="https://via.placeholder.com/40x40.png?text=OR" // Placeholder src
+              src="https://via.placeholder.com/40x40.png?text=OR"
               alt="Olivia Rhye"
               className="w-10 h-10 rounded-full object-cover"
             />

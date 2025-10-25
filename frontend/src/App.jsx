@@ -14,6 +14,7 @@ import {
 import LoginPage from './pages/Login'
 import SignUpPage from './pages/Signup'
 import DashboardPage from './pages/DashboardPage'
+import ProductsPage from './pages/ProductsPage'
 // import DashboardPage from './pages/DashboardPage'
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
       <Route path='/login' element={<LoginPage/>}/>
       <Route path='/signup' element={<SignUpPage/>}/>
       <Route path='/dashboard' element={<DashboardPage/>} />
+      <Route path='/products' element={<ProductsPage/>} />
     </Routes>
   </Router>
     </>
