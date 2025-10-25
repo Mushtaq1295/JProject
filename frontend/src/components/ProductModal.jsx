@@ -110,9 +110,9 @@ export const ProductModal = ({ isOpen, onClose, productToEdit }) => {
             <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm">
               <PlusIcon /> Add Custom Field
             </button>
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm">
+            {/* <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm">
               <UploadIcon /> Bulk Upload
-            </button>
+            </button> */}
             <button
               onClick={onClose}
               className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600"
@@ -138,6 +138,15 @@ export const ProductModal = ({ isOpen, onClose, productToEdit }) => {
                 onChange={handleChange}
               />
             </FormField>
+            <FormField label="Product Id" htmlFor="pid">
+              <TextInput
+                id="pid"
+                name="pid"
+                placeholder="Ex: BH12345"
+                value={formData.pid || ""}
+                onChange={handleChange}
+              />
+            </FormField>
             <FormField label="Supplier ID" htmlFor="supplierId">
               <TextInput
                 id="supplierId"
@@ -147,19 +156,6 @@ export const ProductModal = ({ isOpen, onClose, productToEdit }) => {
                 onChange={handleChange}
               />
             </FormField>
-            <FormField label="Weight (in lbs)" htmlFor="weight">
-              <TextInput
-                id="weight"
-                name="weight"
-                placeholder="Enter Weight here"
-                value={formData.weight || ""}
-                onChange={handleChange}
-              />
-            </FormField>
-          </FormRow>
-
-          {/* Row 2 */}
-          <FormRow>
             <FormField label="Category" htmlFor="category">
               <TextInput
                 id="category"
@@ -169,36 +165,36 @@ export const ProductModal = ({ isOpen, onClose, productToEdit }) => {
                 onChange={handleChange}
               />
             </FormField>
-            <FormField label="Dimension Unit" htmlFor="dimensionUnit">
-              <SelectInput
-                id="dimensionUnit"
-                name="dimensionUnit"
-                value={formData.dimensionUnit || "inch"}
-                onChange={handleChange}
-              >
-                <option value="inch">inch</option>
-                <option value="cm">cm</option>
-                <option value="m">m</option>
-              </SelectInput>
-            </FormField>
-            <FormField
-              label="Dimensions (L x B x H)"
-              htmlFor="dimensions"
+          {/* Row 2 */}
+          <FormField
+              label="Price"
+              htmlFor="price"
             >
               <TextInput
-                id="dimensions"
-                name="dimensions"
-                placeholder="Ex: 20 x 30 x 40"
-                value={formData.dimensions || ""}
+                id="price"
+                name="price"
+                placeholder="Ex: 200"
+                value={formData.price || ""}
                 onChange={handleChange}
               />
             </FormField>
+          
+            <FormField label="Weight (in lbs)" htmlFor="weight">
+              <TextInput
+                id="weight"
+                name="weight"
+                placeholder="Enter Weight here"
+                value={formData.weight || ""}
+                onChange={handleChange}
+              />
+            </FormField>
+            
           </FormRow>
 
           {/* Row 3 */}
           <FormRow>
             <FormField
-              label="Recorded Stock Level"
+              label="Stock Level"
               htmlFor="stockLevel"
             >
               <TextInput
@@ -210,14 +206,14 @@ export const ProductModal = ({ isOpen, onClose, productToEdit }) => {
               />
             </FormField>
             <FormField
-              label="Warning Threshold Stock Level"
-              htmlFor="warnThreshold"
+              label="Recorded Level"
+              htmlFor="recordedLevel"
             >
               <TextInput
-                id="warnThreshold"
-                name="warnThreshold"
+                id="recordedLevel"
+                name="recordedLevel"
                 placeholder="Ex: 100"
-                value={formData.warnThreshold || ""}
+                value={formData.recordedLevel || ""}
                 onChange={handleChange}
               />
             </FormField>
@@ -233,94 +229,7 @@ export const ProductModal = ({ isOpen, onClose, productToEdit }) => {
                 onChange={handleChange}
               />
             </FormField>
-          </FormRow>
-
-          {/* Row 4 */}
-          <FormRow>
-            <FormField label="SKU Code" htmlFor="sku">
-              <TextInput
-                id="sku"
-                name="sku"
-                placeholder="RTY1234455"
-                value={formData.sku || ""}
-                onChange={handleChange}
-              />
-            </FormField>
-            <FormField label="Barcode Number" htmlFor="barcode">
-              <TextInput
-                id="barcode"
-                name="barcode"
-                placeholder="QWERTY0987"
-                value={formData.barcode || ""}
-                onChange={handleChange}
-              />
-            </FormField>
-            <FormField
-              label="GRN Number (Optional)"
-              htmlFor="grn"
-            >
-              <TextInput
-                id="grn"
-                name="grn"
-                placeholder="QWERTY56787"
-                value={formData.grn || ""}
-                onChange={handleChange}
-              />
-            </FormField>
-          </FormRow>
-
-          {/* Row 5 - Image, Price, Margin */}
-          <FormRow>
-            <FormField
-              label="Insert Image (400px x 400px)"
-              htmlFor="imageUpload"
-            >
-              <div className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 hover:border-purple-500 cursor-pointer">
-                <PlusIcon className="w-8 h-8" />
-                <span className="text-sm">Click to upload</span>
-              </div>
-            </FormField>
-            <FormField
-              label="Purchasing Price"
-              htmlFor="purchasePrice"
-            >
-              <TextInput
-                id="purchasePrice"
-                name="purchasePrice"
-                placeholder="Ex: $100"
-                value={formData.purchasePrice || ""}
-                onChange={handleChange}
-              />
-            </FormField>
-            <FormField
-              label="Selling Price Margin"
-              htmlFor="sellMargin"
-            >
-              <TextInput
-                id="sellMargin"
-                name="sellMargin"
-                placeholder="Ex: 20%"
-                value={formData.sellMargin || ""}
-                onChange={handleChange}
-              />
-            </FormField>
-          </FormRow>
-
-          {/* Row 6 - Description */}
-          <FormField
-            label="Product Description"
-            htmlFor="description"
-          >
-            <textarea
-              id="description"
-              name="description"
-              rows="3"
-              placeholder="Type something about product here"
-              value={formData.description || ""}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm outline-none focus:ring-1 focus:ring-purple-600 focus:border-purple-600 text-sm"
-            ></textarea>
-          </FormField>
+          </FormRow>         
         </form>
 
         {/* Footer */}

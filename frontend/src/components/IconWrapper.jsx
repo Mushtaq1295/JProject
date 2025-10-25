@@ -223,6 +223,16 @@ export const CloseIcon = () => (
   </IconWrapper>
 );
 
+export const AlertTriangleIcon = () => (
+  <IconWrapper>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 9v3.75m0 3.75h.008v.008H12v-.008zm-7.938 2.25h15.876c1.054 0 1.867-.945 1.664-1.993l-1.518-7.593a1.75 1.75 0 00-1.664-1.257H4.062c-1.054 0-1.867.945-1.664 1.993l1.518 7.593a1.75 1.75 0 001.664 1.257z"
+    />
+  </IconWrapper>
+);
+
 // export const ArrowRightIcon = () => (
 //   <IconWrapper>
 //     <path

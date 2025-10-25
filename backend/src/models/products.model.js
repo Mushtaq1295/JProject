@@ -51,5 +51,4 @@ export default Product;
 // Weight
 // Stock Level
 // Rec. Level
-// Actions
-// (in units)
+

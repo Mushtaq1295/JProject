@@ -46,7 +46,7 @@ const products = [
   // ... add the rest of your data
 ];
 
-const ProductRow = ({ product, onEdit }) => (
+const ProductRow = ({ product, onEdit,onDelete }) => (
   <tr className="border-b border-gray-200 hover:bg-gray-50">
     <td className="px-5 py-3">
       <input type="checkbox" className="h-4 w-4 rounded border-gray-300" />
@@ -93,7 +93,10 @@ const ProductRow = ({ product, onEdit }) => (
         >
           <EditIcon />
         </button>
-        <button className="text-gray-400 hover:text-red-600 cursor-pointer">
+        <button
+          onClick={() => onDelete(product)}
+          className="text-gray-400 hover:text-red-600 cursor-pointer"
+        >
           <TrashIcon />
         </button>
       </div>
@@ -101,7 +104,7 @@ const ProductRow = ({ product, onEdit }) => (
   </tr>
 );
 
-export const ProductsTable = ({ onEdit }) => {
+export const ProductsTable = ({ onEdit, onDelete }) => {
   const headers = [
     "Product Name",
     "Product ID",
@@ -142,6 +145,7 @@ export const ProductsTable = ({ onEdit }) => {
               key={product.id}
               product={product}
               onEdit={onEdit}
+              onDelete={onDelete}
             />
           ))}
         </tbody>

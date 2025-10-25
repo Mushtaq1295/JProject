@@ -58,8 +58,12 @@ export const Sidebar = () => {
     <aside className="w-64 bg-white flex flex-col shadow-sm fixed top-0 left-0 h-full z-10">
       {/* Logo */}
       <div className="p-4 border-b border-gray-200 h-20 flex items-center">
-        {/* CORRECTED: The important modifier '!' goes before the utility */}
-        <Logo className="!text-2xl cursor-pointer" />
+        <NavLink to="/dashboard" end className="flex items-center">
+        <Logo 
+          to="/dashboard"
+          className="text-2xl! cursor-pointer"
+           />
+           </NavLink>
       </div>
 
       {/* Navigation */}
