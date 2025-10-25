@@ -5,7 +5,8 @@ import { FilterButton } from "./FilterButton";
 import { ExportButton } from "./ExportButton";
 import { AddProductButton } from "./AddProductButton";
 
-export const ProductsToolbar = () => {
+// CHANGED: Accept 'onAddProduct' as a prop
+export const ProductsToolbar = ({ onAddProduct }) => {
   return (
     <div className="flex flex-col md:flex-row justify-between md:items-center mb-4 gap-3">
       {/* Left Side: Search and Filters */}
@@ -17,7 +18,8 @@ export const ProductsToolbar = () => {
       {/* Right Side: Action Buttons */}
       <div className="flex items-center gap-3">
         <ExportButton />
-        <AddProductButton />
+        {/* CHANGED: Pass the 'onAddProduct' function to the button's 'onClick' */}
+        <AddProductButton onClick={onAddProduct} />
       </div>
     </div>
   );

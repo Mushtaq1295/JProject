@@ -4,7 +4,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "./IconWrapper"; // Add these icon
 
 export const Pagination = () => (
   <div className="flex flex-col md:flex-row justify-between md:items-center px-5 py-4 border-t border-gray-200 bg-white rounded-b-lg shadow-sm">
-    <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm mb-3 md:mb-0">
+    <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm mb-3 md:mb-0 cursor-pointer">
       <ArrowLeftIcon />
       Previous
     </button>
@@ -19,7 +19,7 @@ export const Pagination = () => (
       <button className="px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-50">10</button>
     </nav>
     
-    <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm mt-3 md:mt-0">
+    <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm mt-3 md:mt-0 cursor-pointer">
       Next
       <ArrowRightIcon />
     </button>

@@ -153,21 +153,6 @@ export const PlusIcon = () => <IconWrapper><path strokeLinecap="round" strokeLin
 export const CalendarIcon = () => <IconWrapper><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></IconWrapper>;
 export const FilterIcon = () => <IconWrapper><path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 12h9.75M10.5 18h9.75M3.75 6h.008v.008H3.75V6zm.008 6h.008v.008H3.758V12zm0 6h.008v.008H3.758V18z" /></IconWrapper>;
 
-// src/components/IconWrapper.jsx
-// ... (keep all your existing icons like HomeIcon, BoxIcon, etc.)
-
-// --- ADD THESE NEW ICONS ---
-
-// export const PlusIcon = () => (
-//   <IconWrapper>
-//     <path
-//       strokeLinecap="round"
-//       strokeLinejoin="round"
-//       d="M12 4.5v15m7.5-7.5h-15"
-//     />
-//   </IconWrapper>
-// );
-
 export const UploadIcon = () => (
   <IconWrapper>
     <path
@@ -204,6 +189,36 @@ export const ArrowLeftIcon = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
       d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+    />
+  </IconWrapper>
+);
+
+export const DownloadIcon = () => (
+  <IconWrapper>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3 3v2.25A2.25 2.25 0 005.25 7.5h13.5A2.25 2.25 0 0021 5.25V3m-7.5 9l-4.5 4.5m0 0l-4.5-4.5m4.5 4.5V3"
+    />
+  </IconWrapper>
+);
+
+export const ChevronDownIcon = () => (
+  <IconWrapper>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+    />
+  </IconWrapper>
+);
+
+export const CloseIcon = () => (
+  <IconWrapper>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 18L18 6M6 6l12 12"
     />
   </IconWrapper>
 );

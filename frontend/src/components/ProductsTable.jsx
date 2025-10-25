@@ -46,7 +46,7 @@ const products = [
   // ... add the rest of your data
 ];
 
-const ProductRow = ({ product }) => (
+const ProductRow = ({ product, onEdit }) => (
   <tr className="border-b border-gray-200 hover:bg-gray-50">
     <td className="px-5 py-3">
       <input type="checkbox" className="h-4 w-4 rounded border-gray-300" />
@@ -83,10 +83,17 @@ const ProductRow = ({ product }) => (
     <td className="px-5 py-3 text-sm text-gray-600">{product.recLevel}</td>
     <td className="px-5 py-3">
       <div className="flex items-center gap-3">
-        <button className="text-gray-400 hover:text-purple-600">
+        {/*
+          CHANGED: Added onClick handler to the button.
+          It calls the 'onEdit' function and passes this specific 'product' up.
+        */}
+        <button
+          onClick={() => onEdit(product)}
+          className="text-gray-400 hover:text-purple-600 cursor-pointer"
+        >
           <EditIcon />
         </button>
-        <button className="text-gray-400 hover:text-red-600">
+        <button className="text-gray-400 hover:text-red-600 cursor-pointer">
           <TrashIcon />
         </button>
       </div>
@@ -94,7 +101,7 @@ const ProductRow = ({ product }) => (
   </tr>
 );
 
-export const ProductsTable = () => {
+export const ProductsTable = ({ onEdit }) => {
   const headers = [
     "Product Name",
     "Product ID",
@@ -113,7 +120,10 @@ export const ProductsTable = () => {
         <thead>
           <tr className="border-b border-gray-200 bg-gray-50/50">
             <th className="px-5 py-3 text-left w-10">
-              <input type="checkbox" className="h-4 w-4 rounded border-gray-300" />
+              <input
+                type="checkbox"
+                className="h-4 w-4 rounded border-gray-300"
+              />
             </th>
             {headers.map((header) => (
               <th
@@ -127,7 +137,12 @@ export const ProductsTable = () => {
         </thead>
         <tbody className="divide-y divide-gray-200">
           {products.map((product) => (
-            <ProductRow key={product.id} product={product} />
+            // CHANGED: Pass the 'onEdit' prop down to the ProductRow
+            <ProductRow
+              key={product.id}
+              product={product}
+              onEdit={onEdit}
+            />
           ))}
         </tbody>
       </table>
