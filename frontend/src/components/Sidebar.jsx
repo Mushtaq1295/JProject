@@ -1,5 +1,5 @@
 // Sidebar.jsx
-import React from "react"; // REMOVED: useState
+import React from "react";
 import Logo from "./Logo";
 import {
   BoxIcon,
@@ -13,19 +13,17 @@ import {
   UsersIcon,
   WarehouseIcon,
 } from "./IconWrapper";
-import { NavLink } from "react-router-dom"; // IMPORT: NavLink
+import { NavLink, useLocation, useNavigate } from "react-router-dom"; // Keep these imports
+import { useAuth } from "../context/AuthContext"; // Keep this import
 
 // --- Reusable NavItem ---
-// CHANGED: Converted to NavLink, uses 'to' prop for path
-// REMOVED: 'active' and 'onClick' props (NavLink handles this)
 const NavItem = ({ icon, text, to, end = false }) => (
-  <NavLink
+ <NavLink
     to={to}
-    end={end} // 'end' prop ensures '/' only matches the root path
-    // 'className' now takes a function to check if the link is active
+    end={end}
     className={({ isActive }) =>
       `flex items-center space-x-3 px-3 py-2.5 rounded-lg ${
-        isActive // Use 'isActive' from NavLink
+        isActive
           ? "bg-purple-50 text-[#6941C6]"
           : "text-gray-600 hover:bg-gray-100"
       }`
@@ -38,12 +36,29 @@ const NavItem = ({ icon, text, to, end = false }) => (
   </NavLink>
 );
 
-export const Sidebar = () => {
-  // REMOVED: const [activeItem, setActiveItem] = useState("Overview");
+// REMOVED HOOKS AND HANDLER FROM HERE
 
-  // CHANGED: Added 'path' for each navigation item
+export const Sidebar = () => {
+  // --- MOVED HOOK CALLS AND HANDLER INSIDE THE COMPONENT ---
+  const { logoutAction, user } = useAuth(); // Also get user if needed for display
+  const navigate = useNavigate();
+  // const location = useLocation(); // Keep if you need it elsewhere
+
+  const handleLogout = () => { // Removed async as logoutAction isn't async
+    try {
+      logoutAction(); // Call the context action
+      // Redirect to login page after logout
+      // Using /login instead of / ensures logged-out users land there
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Optionally show an error message to the user
+    }
+  };
+  // --------------------------------------------------------
+
   const navItems = [
-    { icon: <HomeIcon />, text: "Overview", path: "/dashboard" }, // Root path
+    { icon: <HomeIcon />, text: "Overview", path: "/dashboard" },
     { icon: <BoxIcon />, text: "Products", path: "/products" },
     { icon: <TruckIcon />, text: "Supplier", path: "/supplier" },
     { icon: <TagIcon />, text: "Category", path: "/category" },
@@ -58,24 +73,26 @@ export const Sidebar = () => {
     <aside className="w-64 bg-white flex flex-col shadow-sm fixed top-0 left-0 h-full z-10">
       {/* Logo */}
       <div className="p-4 border-b border-gray-200 h-20 flex items-center">
-        <NavLink to="/dashboard" end className="flex items-center">
-        <Logo 
-          to="/dashboard"
-          className="text-2xl! cursor-pointer"
-           />
-           </NavLink>
+        {/* Make logo navigate to dashboard */}
+        <NavLink to="/dashboard">
+          {/* Ensure className prop doesn't have syntax error `!text-2xl` -> `!text-2xl` */}
+          <Logo className="!text-2xl cursor-pointer" />
+        </NavLink>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-        {/* CHANGED: Mapping to NavItem with 'to' and 'end' props */}
         {navItems.map((item) => (
           <NavItem
             key={item.text}
             icon={item.icon}
             text={item.text}
             to={item.path}
-            end={item.path === "/"} // Add 'end' prop only for the "Overview" link
+            // Correct logic for 'end' prop: only true for the EXACT root path if needed
+            // If '/dashboard' is your main page, it might not need 'end'
+            // If you had a '/' path, THAT would need 'end={item.path === "/"}'
+            // Let's assume /dashboard doesn't need 'end' unless it's truly the root '/'
+             end={item.path === "/dashboard"} // Added end prop for dashboard if it's the root/index
           />
         ))}
       </nav>
@@ -85,16 +102,22 @@ export const Sidebar = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <img
-              src="https://via.placeholder.com/40x40.png?text=OR"
-              alt="Olivia Rhye"
+              src="https://via.placeholder.com/40x40.png?text=OR" // Placeholder src
+              alt={user?.name || "User"} // Display user name if available
               className="w-10 h-10 rounded-full object-cover"
             />
             <div className="cursor-pointer">
-              <p className="font-semibold text-sm">Olivia Rhye</p>
-              <p className="text-xs text-gray-500">Admin</p>
+              {/* Display actual user name */}
+              <p className="font-semibold text-sm">{user?.name || 'User Name'}</p>
+              <p className="text-xs text-gray-500">Admin</p> {/* Or user role */}
             </div>
           </div>
-          <button className="text-gray-400 hover:text-gray-600 cursor-pointer">
+          {/* Changed div to button for better accessibility */}
+          <button
+            onClick={handleLogout}
+            className="text-gray-400 hover:text-gray-600 cursor-pointer"
+            aria-label="Logout"
+          >
             <LogoutIcon />
           </button>
         </div>

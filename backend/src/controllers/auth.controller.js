@@ -16,7 +16,7 @@ export const signup = async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    if (password.length < 5) {
+    if (password.length < 6) {
       return res
         .status(400)
         .json({ message: "Password must be at least 6 characters long" });
@@ -94,7 +94,7 @@ export const login = async (req, res) => {
 
 //logout
 export const logout = (req, res) => {
-  res.clearCookie("token");
+  // res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 };
 
